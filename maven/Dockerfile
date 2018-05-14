@@ -1,4 +1,4 @@
-FROM cogvio/oracle-java:jdk8
+FROM cogvio/java:jdk8
 
 MAINTAINER Filip Procházka <filip.prochazka@cogvio.com>
 

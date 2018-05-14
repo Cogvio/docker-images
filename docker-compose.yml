@@ -2,9 +2,9 @@ version: "3"
 
 services:
   oracle-java:
-    image: cogvio/oracle-java:jdk8
+    image: cogvio/java:jdk8
     build:
-      context: oracle-java/jdk-8
+      context: java/jdk-8
 
   maven:
     image: cogvio/maven:3.5.3-jdk8
