@@ -4,6 +4,30 @@ MAINTAINER Filip Procházka <filip.prochazka@cogvio.com>
 
 RUN apk add --no-cache curl tar bash procps
 
+ENV GOSU_VERSION=1.10 \
+    GOSU_GPG_KEY=B42F6819007F00F88E364FD4036A9C25BF357DD4
+RUN set -ex; \
+	\
+	apk add --no-cache --virtual .gosu-deps \
+		dpkg \
+		gnupg \
+		openssl \
+	; \
+	\
+	dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+	wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+	wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+	\
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GOSU_GPG_KEY" || gpg --keyserver pgp.mit.edu --recv-keys "$GOSU_GPG_KEY" || gpg --keyserver keyserver.pgp.com --recv-keys "$GOSU_GPG_KEY"; \
+	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
+	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
+	\
+	chmod +x /usr/local/bin/gosu; \
+	gosu nobody true; \
+	\
+	apk del .gosu-deps
+
 ARG MAVEN_VERSION=3.5.3
 ARG USER_HOME_DIR="/root"
 ARG SHA=b52956373fab1dd4277926507ab189fb797b3bc51a2a267a193c931fffad8408
