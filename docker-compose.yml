@@ -1,14 +1,7 @@
 version: "3"
 
 services:
-  oracle-java:
-    image: cogvio/java:jdk8
-    build:
-      context: java/jdk-8
-
   maven:
-    image: cogvio/maven:3.5.3-jdk8
+    image: cogvio/maven:3.5.3-8u172b11_jdk_unlimited
     build:
       context: maven
-    depends_on:
-      - oracle-java
