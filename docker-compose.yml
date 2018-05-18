@@ -5,3 +5,10 @@ services:
     image: cogvio/maven:3.5.3-8u172b11_jdk_unlimited
     build:
       context: maven
+
+  maven-nodejs:
+    image: cogvio/maven-nodejs:3.5.3-8u172b11_jdk_unlimited-10.1.0js
+    build:
+      context: maven-nodejs
+    depends_on:
+      - maven
