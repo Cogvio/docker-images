@@ -10,9 +10,7 @@ RUN apk add python2 py2-pip
 # https://github.com/nodejs/docker-node/blob/2ecc9e8579f519ae3d267b5b497b8c04d6c7040d/10/alpine/Dockerfile
 #
 ENV NODE_VERSION 10.1.0
-RUN addgroup -g 1000 node \
-    && adduser -u 1000 -G node -s /bin/sh -D node \
-    && apk add --no-cache \
+RUN apk add --no-cache \
         libstdc++ \
     && apk add --no-cache --virtual .build-deps \
         binutils-gold \
