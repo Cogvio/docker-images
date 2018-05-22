@@ -7,7 +7,7 @@ services:
       context: maven
 
   maven-nodejs:
-    image: cogvio/maven-nodejs:3.5.3-8u172b11_jdk_unlimited-10.1.0js-2.7.15py
+    image: cogvio/maven-nodejs:3.5.3-8u172b11_jdk_unlimited-10.1.0js-2.7.14py
     build:
       context: maven-nodejs
     depends_on:
