@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+if [ -z ${SYSLOG_HOST+x} ]; then
+    echo "Missing ENV variable SYSLOG_HOST and SYSLOG_PORT"
+    exit 1
+else
+    echo "*.*    @${SYSLOG_HOST}:${SYSLOG_PORT}" > /etc/rsyslog.d/remote.conf
+fi
+
+exec "$@"

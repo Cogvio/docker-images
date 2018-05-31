@@ -12,3 +12,8 @@ services:
       context: maven-nodejs
     depends_on:
       - maven
+
+  rsyslog:
+    image: cogvio/rsyslog:latest
+    build:
+      context: rsyslog
