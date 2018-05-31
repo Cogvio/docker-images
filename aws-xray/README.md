@@ -7,7 +7,7 @@ See [Running the X-Ray Daemon on Amazon ECS](https://docs.aws.amazon.com/xray/la
 ```sh
 services:
   aws-xray:
-    image: cogvio/aws-xray:latest
+    image: cogvio/aws-xray:2
     environment:
       - AWS_REGION=eu-central-1
       - AWS_ACCESS_KEY_ID=abc
