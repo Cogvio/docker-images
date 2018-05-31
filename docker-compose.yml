@@ -17,3 +17,8 @@ services:
     image: cogvio/rsyslog:latest
     build:
       context: rsyslog
+
+  aws-xray:
+    image: cogvio/aws-xray:2
+    build:
+      context: aws-xray
