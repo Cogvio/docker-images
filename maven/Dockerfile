@@ -1,14 +1,14 @@
-FROM anapsix/alpine-java:8u172b11_jdk_unlimited
+FROM cogvio/debian-java
 
 MAINTAINER Filip Procházka <filip.prochazka@cogvio.com>
 
-RUN apk add --no-cache curl tar bash procps
+RUN apt-get install curl tar bash procps
 
 ENV GOSU_VERSION=1.10 \
     GOSU_GPG_KEY=B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN set -ex; \
 	\
-	apk add --no-cache --virtual .gosu-deps \
+	apt-get install \
 		dpkg \
 		gnupg \
 		openssl \
@@ -24,9 +24,7 @@ RUN set -ex; \
 	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
 	chmod +x /usr/local/bin/gosu; \
-	gosu nobody true; \
-	\
-	apk del .gosu-deps
+	gosu nobody true;
 
 ARG MAVEN_VERSION=3.5.3
 ARG USER_HOME_DIR="/root"
