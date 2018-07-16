@@ -3,23 +3,17 @@ FROM cogvio/maven:3.5.3-8u172b11_jdk_unlimited
 #
 # Python
 #
-RUN apk add python2 py2-pip
+# RUN apt-get install python2 py2-pip
 
 #
 # Node.js
 # https://github.com/nodejs/docker-node/blob/2ecc9e8579f519ae3d267b5b497b8c04d6c7040d/10/alpine/Dockerfile
 #
 ENV NODE_VERSION 10.1.0
-RUN apk add --no-cache \
-        libstdc++ \
-    && apk add --no-cache --virtual .build-deps \
+RUN apt-get install -y \
         binutils-gold \
-        curl \
         g++ \
         gcc \
-        gnupg \
-        libgcc \
-        linux-headers \
         make \
         python \
   # gpg keys listed at https://github.com/nodejs/node#release-team
@@ -46,7 +40,6 @@ RUN apk add --no-cache \
     && ./configure \
     && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
-    && apk del .build-deps \
     && cd .. \
     && rm -Rf "node-v$NODE_VERSION" \
     && rm "node-v$NODE_VERSION.tar.gz" SHASUMS256.txt.asc SHASUMS256.txt
@@ -56,7 +49,7 @@ RUN apk add --no-cache \
 # https://github.com/nodejs/docker-node/blob/2ecc9e8579f519ae3d267b5b497b8c04d6c7040d/10/alpine/Dockerfile
 #
 ENV YARN_VERSION 1.7.0
-RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
+RUN apt-get install tar \
   && for key in \
     6A010C5166006599AA17F08146C2130DFD2497F5 \
   ; do \
@@ -71,5 +64,4 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
-  && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
-  && apk del .build-deps-yarn
+  && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
