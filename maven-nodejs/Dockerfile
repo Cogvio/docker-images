@@ -1,4 +1,4 @@
-FROM cogvio/maven:3.5.3-8u172b11_jdk_unlimited
+FROM cogvio/maven:3.6.0-8u192b12_jdk_unlimited
 
 #
 # Python
@@ -7,9 +7,9 @@ RUN apk add python2 py2-pip
 
 #
 # Node.js
-# https://github.com/nodejs/docker-node/blob/2ecc9e8579f519ae3d267b5b497b8c04d6c7040d/10/alpine/Dockerfile
+# https://github.com/nodejs/docker-node/blob/6998705ad6ced12fe5913cb23142367eb46c4416/10/alpine/Dockerfile
 #
-ENV NODE_VERSION 10.1.0
+ENV NODE_VERSION 10.13.0
 RUN apk add --no-cache \
         libstdc++ \
     && apk add --no-cache --virtual .build-deps \
@@ -22,7 +22,7 @@ RUN apk add --no-cache \
         linux-headers \
         make \
         python \
-  # gpg keys listed at https://github.com/nodejs/node#release-team
+  # gpg keys listed at https://github.com/nodejs/node#release-keys
   && for key in \
     94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
     FD3A5288F042B6850C66B31F09FE44734EB7990E \
@@ -32,13 +32,14 @@ RUN apk add --no-cache \
     B9AE9905FFD7803F25714661B63B535A4C206CA9 \
     56730D5401028683275BD23C23EFEFE93C4CFFFE \
     77984A986EBC2AA786BC0F66B01FBB92821C587A \
+    8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600 \
   ; do \
-    gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
-    gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
-    gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
+    gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
+    gpg --batch --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
+    gpg --batch --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
   done \
-    && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.gz" \
-    && curl -SLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
+    && curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.gz" \
+    && curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
     && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
     && grep " node-v$NODE_VERSION.tar.gz\$" SHASUMS256.txt | sha256sum -c - \
     && tar -xf "node-v$NODE_VERSION.tar.gz" \
@@ -53,16 +54,16 @@ RUN apk add --no-cache \
 
 #
 # Yarn
-# https://github.com/nodejs/docker-node/blob/2ecc9e8579f519ae3d267b5b497b8c04d6c7040d/10/alpine/Dockerfile
+# https://github.com/nodejs/docker-node/blob/6998705ad6ced12fe5913cb23142367eb46c4416/10/alpine/Dockerfile
 #
-ENV YARN_VERSION 1.7.0
+ENV YARN_VERSION 1.10.1
 RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
     6A010C5166006599AA17F08146C2130DFD2497F5 \
   ; do \
-    gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
-    gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
-    gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
+    gpg --batch --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
+    gpg --batch --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
+    gpg --batch --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
   done \
   && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
   && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc" \
