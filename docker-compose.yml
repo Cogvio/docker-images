@@ -2,7 +2,7 @@ version: "3"
 
 services:
   maven:
-    image: cogvio/maven:3.5.3-8u172b11_jdk_unlimited
+    image: cogvio/maven:3.6.0-8u192b12_jdk_unlimited
     build:
       context: maven
 
