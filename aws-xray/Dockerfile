@@ -7,9 +7,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp \
-    && wget https://s3.dualstack.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon/aws-xray-daemon-2.x.deb \
-    && dpkg -i aws-xray-daemon-2.x.deb \
-    && rm aws-xray-daemon-2.x.deb \
+    && wget https://s3.dualstack.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon/aws-xray-daemon-3.x.deb \
+    && dpkg -i aws-xray-daemon-3.x.deb \
+    && rm aws-xray-daemon-3.x.deb \
     && mkdir -p /root/.aws/
 
 EXPOSE 2000/udp
