@@ -2,6 +2,8 @@ FROM alpine:3.8
 
 MAINTAINER Filip Procházka <filip.prochazka@cogvio.com>
 
+ENV TZ=/etc/localtime
+
 RUN apk add --update \
     rsyslog \
   && rm -rf /var/cache/apk/*
