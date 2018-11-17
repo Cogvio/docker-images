@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 MAINTAINER Filip Procházka <filip.prochazka@cogvio.com>
 
@@ -11,7 +11,7 @@ EXPOSE 514/tcp
 
 # for some reason, the apk comes built with a v5 config file. using this one for v8:
 COPY ./etc/rsyslog.conf /etc/rsyslog.conf
-COPY ./etc/rsyslog.d/mark.conf /etc/rsyslog.d/
+COPY ./etc/rsyslog.d/remote.conf /etc/rsyslog.d/
 COPY ./rsyslog-entrypoint /rsyslog-entrypoint
 
 ENTRYPOINT ["/rsyslog-entrypoint"]
